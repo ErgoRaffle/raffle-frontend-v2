@@ -92,7 +92,11 @@ export const createRaffle = async (data: RaffleForm, wallet: WalletContextValue)
       winnersPercentList.push(BigInt(current.percent) * 10n);
     }
   }
-  for (let i = 0; i < data.emptyBaskets; i++) {
+  if (!data.details.length) {
+    winnersPercentList.push(1000n);
+  }
+  const emptyBaskets = data.details.length ? data.emptyBaskets : data.emptyBaskets - 1;
+  for (let i = 0; i < emptyBaskets; i++) {
     winnersPercentList.push(0n);
   }
 
