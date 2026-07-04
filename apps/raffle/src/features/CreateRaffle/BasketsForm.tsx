@@ -68,83 +68,89 @@ export const BasketsForm = ({ handleNext, handleBack }: BasketsFormProps) => {
           Each winner gets a basket. It can hold part of the raffle share, gifts, both, or none.
         </Typography>
       </div>
-      <div className="space-y-3">
-        <div>
-          <FieldTitle title="Distribute Winners Pot between Share Baskets." />
-          <Typography variant="body-md" className="mt-1 mb-3" asChild>
+      {winnerPotShare !== 0 && (
+        <>
+          <div className="space-y-3">
             <div>
-              Winners Pot: {winnerPotShare}% of Total Fund{' '}
-              {winnerPotShare && (
-                <Typography asChild variant="body-sm" className="ml-1">
-                  <span>{`(${100 - filledSharePercent}% remaining)`}</span>
-                </Typography>
-              )}
+              <FieldTitle title="Distribute Winners Pot between Share Baskets." />
+              <Typography variant="body-md" className="mt-1 mb-3" asChild>
+                <div>
+                  Winners Pot: {winnerPotShare}% of Total Fund{' '}
+                  <Typography asChild variant="body-sm" className="ml-1">
+                    <span>{`(${100 - filledSharePercent}% remaining)`}</span>
+                  </Typography>
+                </div>
+              </Typography>
             </div>
-          </Typography>
-        </div>
-        <Progress variant="box" value={filledSharePercent} max={100} />
-      </div>
-      <Field>
-        <FieldLabel>Share Baskets Details</FieldLabel>
-        <div
-          className="flex items-center flex-wrap border border-gray-4 rounded-lg aria-invalid:border-error pt-2 pr-3 pb-2.5 pl-4 gap-2"
-          aria-invalid={!!errors.details}
-        >
-          {detailsItems.map((item, index) => (
+            <Progress variant="box" value={filledSharePercent} max={100} />
+          </div>
+          <Field>
+            <FieldLabel>Share Baskets Details</FieldLabel>
             <div
-              key={item.id}
-              className="flex items-center bg-gray-5 text-gray-5-foreground rounded-md px-1.5 py-1 gap-2"
+              className="flex items-center flex-wrap border border-gray-4 rounded-lg aria-invalid:border-error pt-2 pr-3 pb-2.5 pl-4 gap-2"
+              aria-invalid={!!errors.details}
             >
-              <div className="flex items-center gap-0.5">
-                <Input
-                  type="number"
-                  min={0}
-                  size="sm"
-                  className="w-9 sm:w-10 pl-0 pr-0 sm:pl-0 sm:pr-0 text-center"
-                  {...register(`details.${index}.count`, {
-                    setValueAs: (v) => (v === '' ? undefined : Number(v)),
-                    onChange: () => trigger('details')
-                  })}
-                />
-                <span className="ml-0.5">X</span>
-              </div>
-              <div className="flex items-center gap-0.5">
-                <Input
-                  type="number"
-                  min={0}
-                  max={100}
-                  size="sm"
-                  className="w-9 sm:w-10 pl-0 pr-0 sm:pl-0 sm:pr-0 text-center"
-                  {...register(`details.${index}.percent`, {
-                    setValueAs: (v) => (v === '' ? undefined : Number(v)),
-                    onChange: () => trigger('details')
-                  })}
-                />
-                <span className="ml-0.5">%</span>
-              </div>
-              <Button variant="plain" size="icon-xs" onClick={() => remove(index)} type="button">
-                <Trash className="size-5" />
+              {detailsItems.map((item, index) => (
+                <div
+                  key={item.id}
+                  className="flex items-center bg-gray-5 text-gray-5-foreground rounded-md px-1.5 py-1 gap-2"
+                >
+                  <div className="flex items-center gap-0.5">
+                    <Input
+                      type="number"
+                      min={0}
+                      size="sm"
+                      className="w-9 sm:w-10 pl-0 pr-0 sm:pl-0 sm:pr-0 text-center"
+                      {...register(`details.${index}.count`, {
+                        setValueAs: (v) => (v === '' ? undefined : Number(v)),
+                        onChange: () => trigger('details')
+                      })}
+                    />
+                    <span className="ml-0.5">X</span>
+                  </div>
+                  <div className="flex items-center gap-0.5">
+                    <Input
+                      type="number"
+                      min={0}
+                      max={100}
+                      size="sm"
+                      className="w-9 sm:w-10 pl-0 pr-0 sm:pl-0 sm:pr-0 text-center"
+                      {...register(`details.${index}.percent`, {
+                        setValueAs: (v) => (v === '' ? undefined : Number(v)),
+                        onChange: () => trigger('details')
+                      })}
+                    />
+                    <span className="ml-0.5">%</span>
+                  </div>
+                  <Button
+                    variant="plain"
+                    size="icon-xs"
+                    onClick={() => remove(index)}
+                    type="button"
+                  >
+                    <Trash className="size-5" />
+                  </Button>
+                </div>
+              ))}
+              <Button
+                variant="plain"
+                size="icon-xs"
+                onClick={() =>
+                  append({
+                    id: crypto.randomUUID(),
+                    count: 1,
+                    percent: 0
+                  })
+                }
+                type="button"
+              >
+                <Plus />
               </Button>
             </div>
-          ))}
-          <Button
-            disabled={!winnerPotShare}
-            variant="plain"
-            size="icon-xs"
-            onClick={() =>
-              append({
-                id: crypto.randomUUID(),
-                count: 1,
-                percent: 0
-              })
-            }
-            type="button"
-          >
-            <Plus />
-          </Button>
-        </div>
-        {!!errors.details && <FieldError>{errors.details.message}</FieldError>}
-      </Field>
+            {!!errors.details && <FieldError>{errors.details.message}</FieldError>}
+          </Field>
+        </>
+      )}
       <div className="space-y-3">
         <FieldTitle title="Create Empty Baskets." />
         <Field>

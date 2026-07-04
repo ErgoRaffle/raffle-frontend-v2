@@ -141,6 +141,12 @@ export const Finish = ({ handleBack, infoBlockchain }: FinishProps) => {
             {serviceFee ?? 0}%
           </Typography>
         </div>
+        <div className="flex justify-between not-last:border-b border-b-black-4 py-3">
+          <Typography variant="body-button">Winners count:</Typography>
+          <Typography variant="body-lg" className="text-gray-1">
+            {data.details.length + data.emptyBaskets}
+          </Typography>
+        </div>
       </div>
       <div className="space-y-3">
         <Typography variant="heading-3" className="text-center">

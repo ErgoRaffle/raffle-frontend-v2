@@ -95,6 +95,14 @@ export const createRaffleSchema = (serviceFee?: number) =>
     .and(raffleDonationGoalSchema(serviceFee))
     .and(raffleBasketsSchema)
     .superRefine((data, ctx) => {
+      if (data.winnerPotShare === 0 && data.emptyBaskets <= 0) {
+        ctx.addIssue({
+          code: 'custom',
+          message: 'Cannot be less than 1',
+          path: ['emptyBaskets']
+        });
+      }
+
       if (data.winnerPotShare === 0) return;
 
       const items = data.details ?? [];
