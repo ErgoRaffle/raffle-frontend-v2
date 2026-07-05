@@ -15,6 +15,7 @@ export type WalletContextValue = {
   connecting?: boolean;
   agreed?: boolean;
   connect: (name: WalletName | undefined) => Promise<void>;
+  disconnect: (name: WalletName) => Promise<void>;
   openDialog: (names?: WalletName[]) => Promise<WalletInstance | undefined>;
   closeDialog: () => Promise<void>;
   agree: () => void;
@@ -78,6 +79,18 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
     },
     [dialogResolver, wallets]
   );
+
+  const disconnect = useCallback(async () => {
+    if (!selected) return;
+
+    selected
+      .disconnect()
+      .then(() => {
+        setSelected(undefined);
+        localStorage.removeItem('raffle:wallet');
+      })
+      .catch(() => undefined);
+  }, [selected]);
 
   const openDialog = useCallback(
     async (names?: WalletName[]): Promise<WalletInstance | undefined> => {
@@ -157,6 +170,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
       selected,
       wallets,
       connect,
+      disconnect,
       openDialog,
       agree,
       closeDialog,
@@ -170,6 +184,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
       connecting,
       selected,
       connect,
+      disconnect,
       openDialog,
       ensureConnected,
       closeDialog,
