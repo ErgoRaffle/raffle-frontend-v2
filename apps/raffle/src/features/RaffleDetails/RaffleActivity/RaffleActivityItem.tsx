@@ -4,7 +4,7 @@ import type { GetActivity200ItemsItem } from '@ergo-raffle/client';
 import { Card, CardContent, Identifier, Skeleton, Typography } from '@ergo-raffle/ui-kit';
 
 import { activityRenderMap } from '@/features/activityRenderMap';
-import { formatDateTime } from '@/lib';
+import { formatDateTime, getAddressUrl } from '@/lib';
 
 export type RaffleActivityItemProps = {
   activity?: GetActivity200ItemsItem;
@@ -47,7 +47,12 @@ export const RaffleActivityItem = ({
             {loading ? (
               <Skeleton className="h-2 w-40" />
             ) : (
-              <Identifier size="lg" value={activity?.address} className="mr-2" />
+              <Identifier
+                size="lg"
+                value={activity?.address}
+                className="mr-2"
+                href={getAddressUrl(activity?.address)}
+              />
             )}
           </div>
           {loading ? (

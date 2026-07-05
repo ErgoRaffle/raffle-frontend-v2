@@ -18,8 +18,42 @@ import Axios from 'axios';
 import { wrap } from '@/safeServerAction';
 
 const getTokensBase: typeof getTokens = async (params) => {
-  if (!params.tokenIds?.length) return { items: [] };
-  return await getTokens(params);
+  const ergs = [
+    {
+      id: 'erg',
+      name: 'ERG',
+      decimals: 9,
+      isVerified: true
+    },
+    {
+      id: 'ERG',
+      name: 'ERG',
+      decimals: 9,
+      isVerified: true
+    }
+  ];
+
+  const tokenIds = Array.isArray(params.tokenIds)
+    ? params.tokenIds
+    : [params.tokenIds].filter(Boolean);
+
+  if (!tokenIds.length) return { items: [] };
+
+  const hasErg = tokenIds.some((id) => id.toLowerCase() === 'erg');
+
+  const serverTokenIds = tokenIds.filter((id) => id.toLowerCase() !== 'erg');
+
+  if (serverTokenIds.length === 0) {
+    return { items: ergs };
+  }
+
+  const result = await getTokens({ tokenIds: serverTokenIds });
+
+  if (hasErg) {
+    return { items: [...ergs, ...result.items] };
+  }
+
+  return result;
 };
 
 const getTokensSearchBase: typeof getTokensSearch = async (params) => {
