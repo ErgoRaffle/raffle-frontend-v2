@@ -71,28 +71,30 @@ export const RaffleWinnerBasketItem = ({
                 <BasketStatus
                   className="size-7"
                   hasGift={Boolean(basket.gifts?.length)}
-                  filled={Boolean(basket.share)}
+                  filled={raffle?.winnerPotSharePercent !== 0 && Boolean(basket.share)}
                 />
                 <Typography variant="heading-3">{basket.index}</Typography>
               </div>
-              <div className="px-4 flex-2">
-                <Typography variant="body-lg">{basket.share / 10}%</Typography>
-                {basket.share ? (
-                  <Typography
-                    variant="subtitle-md"
-                    data-slot="share-amount"
-                    className="text-gray-2 h-0 overflow-hidden transition-all transition-duration-300 group-hover:h-4 whitespace-nowrap"
-                  >
-                    ={' '}
-                    {!!(raffle?.winnerPotShareAmount && raffle.token?.decimals) &&
-                      getDecimalString(
-                        Math.round((raffle.winnerPotShareAmount * basket.share) / 100),
-                        raffle.token.decimals
-                      )}{' '}
-                    {raffle?.token.name}
-                  </Typography>
-                ) : null}
-              </div>
+              {raffle?.winnerPotSharePercent !== 0 && (
+                <div className="px-4 flex-2">
+                  <Typography variant="body-lg">{basket.share / 10}%</Typography>
+                  {basket.share ? (
+                    <Typography
+                      variant="subtitle-md"
+                      data-slot="share-amount"
+                      className="text-gray-2 h-0 overflow-hidden transition-all transition-duration-300 group-hover:h-4 whitespace-nowrap"
+                    >
+                      ={' '}
+                      {!!(raffle?.winnerPotShareAmount && raffle.token?.decimals) &&
+                        getDecimalString(
+                          Math.round((raffle.winnerPotShareAmount * basket.share) / 100),
+                          raffle.token.decimals
+                        )}{' '}
+                      {raffle?.token.name}
+                    </Typography>
+                  ) : null}
+                </div>
+              )}
               <div className="px-4 flex-7">
                 {!!basket.gifts && (
                   <div>

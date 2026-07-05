@@ -124,6 +124,7 @@ export const RaffleWinnerBaskets = ({ raffle }: RaffleWinnerBasketsProps) => {
         <div className="flex justify-between items-center my-3">
           <RaffleWinnerBasketsFilters
             isLoading={isLoading}
+            raffle={raffle}
             type={type}
             onTypeFilterChange={onTypeFilterChange}
           />
@@ -157,9 +158,11 @@ export const RaffleWinnerBaskets = ({ raffle }: RaffleWinnerBasketsProps) => {
                 <Typography className="px-4 flex-1" variant="body-lg">
                   Basket
                 </Typography>
-                <Typography className="px-4 flex-2" variant="body-lg">
-                  Share of Winners Pot
-                </Typography>
+                {(raffle.winnerPotSharePercent !== 0 || isLoading) && (
+                  <Typography className="px-4 flex-2" variant="body-lg">
+                    Share of Winners Pot
+                  </Typography>
+                )}
                 <Typography className="px-4 flex-7" variant="body-lg">
                   Additional Gifts
                 </Typography>
@@ -188,9 +191,11 @@ export const RaffleWinnerBaskets = ({ raffle }: RaffleWinnerBasketsProps) => {
                   <Typography className="px-4 flex-1" variant="body-lg">
                     Basket
                   </Typography>
-                  <Typography className="px-4 flex-2" variant="body-lg">
-                    Share of Winners Pot
-                  </Typography>
+                  {(raffle.winnerPotSharePercent !== 0 || isLoading) && (
+                    <Typography className="px-4 flex-2" variant="body-lg">
+                      Share of Winners Pot
+                    </Typography>
+                  )}
                   <Typography className="px-4 flex-7" variant="body-lg">
                     Additional Gifts
                   </Typography>

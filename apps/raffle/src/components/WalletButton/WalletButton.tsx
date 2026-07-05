@@ -1,6 +1,6 @@
 'use client';
 
-import { Wallet as WalletIcon } from '@ergo-raffle/icons';
+import { Clipboard, Wallet as WalletIcon } from '@ergo-raffle/icons';
 import { Button, Spinner, Tooltip, Typography } from '@ergo-raffle/ui-kit';
 
 import { useWallet } from '@/hooks';
@@ -10,7 +10,26 @@ export const WalletButton = () => {
 
   return (
     <Tooltip
-      content={Object.values(wallet.addresses || {}).join(', ')}
+      content={
+        <ul>
+          {Object.keys(wallet.addresses || {}).map((key, _, keys) => {
+            const address =
+              wallet.addresses?.[key as unknown as keyof typeof wallet.addresses] || '';
+            return (
+              <li key={key}>
+                {keys.length > 1 && <b>{key}:</b>}
+                &nbsp;
+                {address}
+                &nbsp;
+                <Clipboard
+                  className="align-middle inline-block w-[16px] cursor-pointer"
+                  onClick={() => navigator.clipboard.writeText(address)}
+                />
+              </li>
+            );
+          })}
+        </ul>
+      }
       disabled={wallet.connecting || !wallet.selected}
     >
       <Button
