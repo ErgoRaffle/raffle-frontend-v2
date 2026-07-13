@@ -119,8 +119,7 @@ export const DonateProvider = ({ children, raffle }: DonateProviderProps) => {
           setNetwork(undefined);
         }
         if (walletInstance?.name === 'Nautilus') {
-          setIsSelectNetworkDialogOpen(false);
-          setTimeout(() => submitDonation(walletInstance), 0);
+          setAgreementDialogOpen(true);
         }
         if (walletInstance?.name === 'Xverse') {
           setAgreementDialogOpen(true);
