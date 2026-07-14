@@ -216,7 +216,7 @@ export const Finish = ({ handleBack, infoBlockchain }: FinishProps) => {
                 className="underline hover:text-secondary-1"
                 target="_blank"
               >
-                Terms of Use
+                Terms of Service
               </Link>
               .
             </FieldLabel>
