@@ -1,7 +1,8 @@
 import type { ComponentProps } from 'react';
 
-import { Check } from '@ergo-raffle/icons';
 import { Checkbox as CheckboxPrimitive } from 'radix-ui';
+
+import { Check } from '@ergo-raffle/icons';
 
 import { cn } from '@/lib/utils';
 

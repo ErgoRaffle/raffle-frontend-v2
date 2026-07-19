@@ -17,7 +17,6 @@ export const createServerHook =
 
     const [isLoading, startTransition] = useTransition();
 
-    // biome-ignore lint/correctness/useExhaustiveDependencies: make it better
     useEffect(() => {
       let mounted = true;
 

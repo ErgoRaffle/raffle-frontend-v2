@@ -11,10 +11,8 @@
   "scripts": {
     "build:vercel": "cd ../../ && npm run build && cd apps/raffle && next build",
     "dev": "next dev --turbopack",
-    "lint": "biome check --write && npm run prettify",
-    "lint:check": "biome check && npm run prettify:check",
-    "prettify": "biome format --write",
-    "prettify:check": "biome format",
+    "lint": "biome check --write",
+    "lint:check": "biome check",
     "start": "next start",
     "type-check": "tsc --noEmit"
   },

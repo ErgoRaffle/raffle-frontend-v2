@@ -37,7 +37,7 @@ export const TokensFilter = ({ value, onChange }: TokenFilterProps) => {
   return (
     <MultiSelectCombobox
       items={tokenItems}
-      selected={value ?? []}
+      selected={value}
       onChange={onChange}
       placeholder="Token"
       closeOnChange

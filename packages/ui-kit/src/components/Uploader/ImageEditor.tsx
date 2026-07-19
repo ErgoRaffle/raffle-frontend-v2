@@ -1,6 +1,7 @@
-import { FlipVertical, Return, ZoomIn, ZoomOut } from '@ergo-raffle/icons';
 import type { Meta, UppyFile } from '@uppy/core';
 import { useImageEditor } from '@uppy/react';
+
+import { FlipVertical, Return, ZoomIn, ZoomOut } from '@ergo-raffle/icons';
 
 import { useFramework } from '@/providers';
 

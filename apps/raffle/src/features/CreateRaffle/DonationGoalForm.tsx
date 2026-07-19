@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useState } from 'react';
 
+import { useFormContext } from 'react-hook-form';
+
 import type { WalletToken } from '@ergo-raffle/base-wallet';
 import type { GetInfoBlockchain200 } from '@ergo-raffle/client';
 import { Lock } from '@ergo-raffle/icons';
@@ -24,7 +26,6 @@ import {
   Token,
   toast
 } from '@ergo-raffle/ui-kit';
-import { useFormContext } from 'react-hook-form';
 
 import type { RaffleDonationGoalForm } from '@/features/schemas';
 import { useWallet } from '@/hooks';

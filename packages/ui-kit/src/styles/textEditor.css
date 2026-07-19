@@ -14,7 +14,12 @@
   @apply font-medium text-xs sm:text-md;
 }
 .ql-wrapper .ql-editor {
-  @apply min-h-50 focus-visible:outline-0 } .ql-editor li[data-list="bullet"], .styled-text-preview li[data-list="bullet"], .styled-text-preview ul li { @apply list-disc;
+  @apply min-h-50 focus-visible:outline-0;
+}
+.ql-editor li[data-list="bullet"],
+.styled-text-preview li[data-list="bullet"],
+.styled-text-preview ul li {
+  @apply list-disc;
 }
 .ql-editor li[data-list="ordered"],
 .styled-text-preview li[data-list="ordered"] {

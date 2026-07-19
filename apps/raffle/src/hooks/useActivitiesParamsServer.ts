@@ -1,7 +1,6 @@
 'use client';
 
 import { useMemo } from 'react';
-
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import type { GetActivityParams, GetActivityTypesAnyOfItem } from '@ergo-raffle/client';
@@ -41,7 +40,7 @@ export const useActivitiesQuery = (defaults?: { page?: number; perPage?: number 
   const onTypeFilterChange = (value: GetActivityTypesAnyOfItem) => {
     if (types.includes(value)) {
       const newTypes = types.filter((t) => t !== value);
-      setParam('types', newTypes?.length ? newTypes : undefined);
+      setParam('types', newTypes.length ? newTypes : undefined);
     } else {
       setParam('types', [value, ...types]);
     }

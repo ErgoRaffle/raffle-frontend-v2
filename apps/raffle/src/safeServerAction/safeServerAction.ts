@@ -64,7 +64,7 @@ export const createSafeAction = (config: CreateSafeActionConfig) => {
           traceKey
         };
       } catch (error: unknown) {
-        await config.onError?.(error, traceKey, args);
+        await config.onError(error, traceKey, args);
         return {
           serializedError: serializeError(error),
           traceKey

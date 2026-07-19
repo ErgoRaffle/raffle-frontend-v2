@@ -1,5 +1,7 @@
 import { type ComponentProps, useEffect, useRef, useState } from 'react';
 
+import type Quill from 'quill';
+
 import {
   AlignCenter,
   AlignJustified,
@@ -13,7 +15,6 @@ import {
   Strikethrough,
   Underline
 } from '@ergo-raffle/icons';
-import type Quill from 'quill';
 
 import { cn } from '@/lib';
 
