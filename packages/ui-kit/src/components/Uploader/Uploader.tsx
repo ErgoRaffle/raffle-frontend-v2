@@ -1,8 +1,9 @@
 import type { DragEvent } from 'react';
 
-import { FolderOpen, Info, Pencil, PhotoScan, Trash } from '@ergo-raffle/icons';
 import type { Body, Meta, UppyFile } from '@uppy/core';
 import { Thumbnail, UppyContextProvider } from '@uppy/react';
+
+import { FolderOpen, Info, Pencil, PhotoScan, Trash } from '@ergo-raffle/icons';
 
 import { Button } from '../Button';
 import { Spinner } from '../Spinner';

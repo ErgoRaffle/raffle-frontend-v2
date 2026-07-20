@@ -1,8 +1,10 @@
 'use client';
 
 import { useCallback, useState } from 'react';
-
 import Link from 'next/link';
+
+import { validateAddress } from '@fleet-sdk/core';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 import { Check, Clipboard, Download } from '@ergo-raffle/icons';
 import {
@@ -22,8 +24,6 @@ import {
   Typography,
   toast
 } from '@ergo-raffle/ui-kit';
-import { validateAddress } from '@fleet-sdk/core';
-import ReCAPTCHA from 'react-google-recaptcha';
 
 import { useDonate } from '@/hooks';
 import { paperWallet } from '@/lib';

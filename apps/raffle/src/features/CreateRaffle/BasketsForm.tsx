@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 
+import { useFieldArray, useFormContext } from 'react-hook-form';
+
 import { Info, Plus, Trash } from '@ergo-raffle/icons';
 import {
   BasketStatus,
@@ -15,7 +17,6 @@ import {
   Tooltip,
   Typography
 } from '@ergo-raffle/ui-kit';
-import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import type { RaffleBasketsForm, RaffleDonationGoalForm } from '../schemas';
 import { FieldTitle } from './FieldTitle';

@@ -1,8 +1,10 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-
 import Link from 'next/link';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useFieldArray, useForm } from 'react-hook-form';
 
 import { WalletError, type WalletToken } from '@ergo-raffle/base-wallet';
 import { Dice, UpLeft } from '@ergo-raffle/icons';
@@ -20,8 +22,6 @@ import {
   Typography,
   toast
 } from '@ergo-raffle/ui-kit';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useFieldArray, useForm } from 'react-hook-form';
 
 import type { RaffleDetailView } from '@/features/RaffleDetails/raffleToViewModel';
 import { type AddGiftForm, addGiftSchema } from '@/features/schemas';

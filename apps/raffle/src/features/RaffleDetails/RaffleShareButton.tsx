@@ -6,7 +6,7 @@ import { Button, Skeleton, toast } from '@ergo-raffle/ui-kit';
 export type RaffleShareButtonProps = { loading?: boolean };
 
 export const RaffleShareButton = ({ loading }: RaffleShareButtonProps) => {
-  const url = typeof window !== 'undefined' ? window.location.href : '';
+  const url = typeof window === 'undefined' ? '' : window.location.href;
 
   const handleCopy = () => {
     if (typeof window === 'undefined') return;

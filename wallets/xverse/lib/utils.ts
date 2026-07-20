@@ -19,7 +19,7 @@ import type {
   UnisatAddressBtcUtxos,
   UnisatAddressRunesUtxos,
   UnisatResponse
-} from './NetworkTypes';
+} from './networkTypes';
 
 /**
  * @returns Bitcoin fee ratio

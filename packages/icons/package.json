@@ -18,10 +18,8 @@
   "scripts": {
     "build": "node ./generate.js && tsc && vite build && npm run lint",
     "clean": "rimraf dist && rimraf tsconfig.build.tsbuildinfo",
-    "lint": "biome check --write && npm run prettify",
-    "lint:check": "biome check && npm run prettify:check",
-    "prettify": "biome format --write",
-    "prettify:check": "biome format",
+    "lint": "biome check --write",
+    "lint:check": "biome check",
     "type-check": "npm run generate && tsc --noEmit"
   },
   "devDependencies": {

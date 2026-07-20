@@ -1,11 +1,12 @@
+import { Psbt } from 'bitcoinjs-lib';
+import { AddressPurpose, request } from 'sats-connect';
+
 import {
   SubmitTransactionError,
   UserDeniedTransactionSignatureError,
   Wallet,
   type WalletToken
 } from '@ergo-raffle/base-wallet';
-import { Psbt } from 'bitcoinjs-lib';
-import { AddressPurpose, request } from 'sats-connect';
 
 import { generateUnsignedTx as generateUnsignedTxBitcoin } from './bitcoin';
 import { ICON } from './icon';
@@ -59,10 +60,7 @@ export class XverseWallet extends Wallet<
       (address) => address.purpose === AddressPurpose.Ordinals
     );
 
-    const isNonTaproot =
-      !taprootAddress || !taprootAddress.address.toLowerCase().startsWith('bc1p');
-
-    if (isNonTaproot) {
+    if (!taprootAddress?.address.toLowerCase().startsWith('bc1p')) {
       throw new NonTaprootAddressError(this.name);
     }
 
@@ -70,10 +68,7 @@ export class XverseWallet extends Wallet<
       (address) => address.purpose === AddressPurpose.Payment
     );
 
-    const isNonNativeSegWit =
-      !nativeSegWitAddress || !nativeSegWitAddress.address.toLowerCase().startsWith('bc1q');
-
-    if (isNonNativeSegWit) {
+    if (!nativeSegWitAddress?.address.toLowerCase().startsWith('bc1q')) {
       throw new NonNativeSegWitAddressError(this.name);
     }
 

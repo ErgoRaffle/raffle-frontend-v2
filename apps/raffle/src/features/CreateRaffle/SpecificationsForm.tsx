@@ -1,5 +1,7 @@
 'use client';
 
+import { useFormContext } from 'react-hook-form';
+
 import { AlertTriangle } from '@ergo-raffle/icons';
 import {
   Button,
@@ -14,7 +16,6 @@ import {
   Uploader,
   useUploader
 } from '@ergo-raffle/ui-kit';
-import { useFormContext } from 'react-hook-form';
 
 import type { RaffleSpecificationsForm } from '@/features/schemas';
 import { formatDuration } from '@/lib';

@@ -1,14 +1,13 @@
 @import "tailwindcss";
+@import "@ergo-raffle/ui-kit/index.css";
 
 @plugin "@tailwindcss/typography";
 
 @source "./src";
 @source "../../../../packages/ui-kit/src";
 
-@import "@ergo-raffle/ui-kit/index.css"; 
-
 @custom-variant dark (&:where(.dark, .dark *));
 
-iframe[src*=recaptcha] {
+iframe[src*="recaptcha"] {
   pointer-events: auto;
 }

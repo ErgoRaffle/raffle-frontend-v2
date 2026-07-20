@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.3.10/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.5.4/schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
@@ -7,7 +7,7 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "includes": ["**", "!apps/raffle/src/app/globals.css"]
+    "includes": ["**", "!apps/raffle/src/lib/createServerHook.ts"]
   },
   "formatter": {
     "enabled": true,
@@ -18,19 +18,27 @@
   "linter": {
     "enabled": true,
     "rules": {
+      "a11y": {
+        "noSvgWithoutTitle": "off"
+      },
       "complexity": {
         "noUselessCatch": "error",
+        "noUselessCatchBinding": "error",
         "noUselessFragments": "error",
         "noUselessRename": "error",
         "noUselessStringConcat": "error",
         "noUselessSwitchCase": "error",
         "noUselessTernary": "error",
+        "noUselessUndefined": "error",
         "noUselessUndefinedInitialization": "error",
-        "useArrowFunction": "error"
+        "useArrayFind": "error",
+        "useArrowFunction": "error",
+        "useOptionalChain": "error"
       },
       "correctness": {
         "noGlobalDirnameFilename": "error",
         "noNestedComponentDefinitions": "error",
+        "noNextAsyncClientComponent": "error",
         "noReactPropAssignments": "error",
         "noUnusedFunctionParameters": "error",
         "noUnusedImports": "error",
@@ -40,30 +48,9 @@
         "noDelete": "error",
         "noImgElement": "error"
       },
-      "nursery": {
-        "noDeprecatedImports": "error",
-        "noEqualsToNull": "error",
-        "noLeakedRender": "error",
-        "noMisusedPromises": "error",
-        "noNextAsyncClientComponent": "error",
-        "noReactForwardRef": "error",
-        "noUnknownAttribute": "error",
-        "noUnnecessaryConditions": "error",
-        "noUselessCatchBinding": "error",
-        "noUselessUndefined": "error",
-        "useArraySortCompare": "error",
-        "useConsistentArrowReturn": "error",
-        "useExhaustiveSwitchCases": "error",
-        "useFind": "error",
-        "useSortedClasses": {
-          "options": {
-            "attributes": ["classList"],
-            "functions": ["clsx", "cva", "tw", "tw.*"]
-          }
-        }
-      },
       "style": {
         "noCommonJs": "error",
+        "noDescendingSpecificity": "off",
         "noExportedImports": "error",
         "noNegationElse": "error",
         "noNonNullAssertion": "error",
@@ -71,12 +58,20 @@
         "useAtIndex": "error",
         "useCollapsedElseIf": "error",
         "useCollapsedIf": "error",
+        "useConsistentArrowReturn": "error",
         "useConsistentCurlyBraces": "error",
         "useConsistentObjectDefinitions": "error",
         "useConst": "error",
         "useDefaultParameterLast": "error",
         "useExponentiationOperator": "error",
         "useExportType": "error",
+        "useFilenamingConvention": {
+          "level": "error",
+          "options": {
+            "strictCase": false,
+            "filenameCases": ["camelCase"]
+          }
+        },
         "useForOf": "error",
         "useGroupedAccessorPairs": "error",
         "useImportType": "error",
@@ -94,10 +89,18 @@
         "noAlert": "error",
         "noCatchAssign": "error",
         "noConsole": "error",
+        "noDeprecatedImports": "error",
         "noEmptyBlockStatements": "error",
+        "noEqualsToNull": "error",
         "noEvolvingTypes": "error",
         "noExplicitAny": "error",
+        "noIrregularWhitespace": "error",
+        "noLeakedRender": "error",
+        "noReactForwardRef": "error",
+        "noUnknownAttribute": "error",
+        "noUnnecessaryConditions": "error",
         "noVar": "error",
+        "useArraySortCompare": "error",
         "useGuardForIn": "error",
         "useIsArray": "error"
       }
@@ -118,33 +121,32 @@
     "enabled": true,
     "actions": {
       "source": {
+        "useSortedPackageJson": "on",
         "organizeImports": {
           "level": "on",
           "options": {
+            "sortBareImports": true,
             "groups": [
               ":NODE:",
               ":BLANK_LINE:",
 
-              "react",
-              "react/**",
-              "@react/**",
+              ["react", "react/**"],
+              ["next", "next/**"],
               ":BLANK_LINE:",
 
-              "next",
-              "next/**",
-              "@next/**",
+              [":PACKAGE:", "!@ergo-raffle/**"],
               ":BLANK_LINE:",
 
-              ":PACKAGE:",
+              "@ergo-raffle/**",
               ":BLANK_LINE:",
 
               ":ALIAS:",
               ":BLANK_LINE:",
 
-              ":SIDE_EFFECT:",
+              ":PATH:",
               ":BLANK_LINE:",
 
-              ":PATH:",
+              ":STYLE:",
               ":BLANK_LINE:"
             ]
           }
@@ -156,5 +158,25 @@
     "parser": {
       "tailwindDirectives": true
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": [
+        "apps/raffle/src/{app,components,features,providers}/**/*.tsx",
+        "apps/raffle/src/instrumentation-client.ts",
+        "apps/raffle/next-env.d.ts",
+
+        "packages/ui-kit/src/{components,providers}/**/*.tsx",
+
+        "packages/icons/lib/vite-env.d.ts"
+      ],
+      "linter": {
+        "rules": {
+          "style": {
+            "useFilenamingConvention": "off"
+          }
+        }
+      }
+    }
+  ]
 }

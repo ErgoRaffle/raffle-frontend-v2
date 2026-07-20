@@ -1,5 +1,7 @@
 'use server';
 
+import Axios from 'axios';
+
 import {
   getActivity,
   getInfo,
@@ -13,7 +15,6 @@ import {
   getTokensSearch,
   postApiDonation
 } from '@ergo-raffle/client';
-import Axios from 'axios';
 
 import { wrap } from '@/safeServerAction';
 

@@ -51,12 +51,10 @@ export const RaffleDonateForm = ({ raffle }: RaffleDonateFormProps) => {
                   <Typography variant="heading-4" className="text-black-1 mb-1">
                     How many Tickets to Get?
                   </Typography>
-                  {raffle.token ? (
-                    <Typography variant="subtitle-md" className="text-gray-2">
-                      each Ticket = {getDecimalString(raffle.ticketPrice, raffle.token.decimals)}{' '}
-                      {raffle.token.name}
-                    </Typography>
-                  ) : null}
+                  <Typography variant="subtitle-md" className="text-gray-2">
+                    each Ticket = {getDecimalString(raffle.ticketPrice, raffle.token.decimals)}{' '}
+                    {raffle.token.name}
+                  </Typography>
                 </div>
                 <Field>
                   <Input

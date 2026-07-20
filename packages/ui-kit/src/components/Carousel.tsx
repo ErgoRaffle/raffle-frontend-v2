@@ -1,8 +1,9 @@
 import type { ComponentProps, KeyboardEvent } from 'react';
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 
-import { Left, Right } from '@ergo-raffle/icons';
 import useEmblaCarousel, { type UseEmblaCarouselType } from 'embla-carousel-react';
+
+import { Left, Right } from '@ergo-raffle/icons';
 
 import { cn } from '@/lib/utils';
 

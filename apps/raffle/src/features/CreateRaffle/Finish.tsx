@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-
 import Image from 'next/image';
 import Link from 'next/link';
+
+import { useFormContext } from 'react-hook-form';
 
 import type { WalletToken } from '@ergo-raffle/base-wallet';
 import type { GetInfoBlockchain200 } from '@ergo-raffle/client';
@@ -23,7 +24,6 @@ import {
   Typography,
   toast
 } from '@ergo-raffle/ui-kit';
-import { useFormContext } from 'react-hook-form';
 
 import { useWallet } from '@/hooks';
 

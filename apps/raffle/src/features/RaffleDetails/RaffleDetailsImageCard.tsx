@@ -28,7 +28,9 @@ export const RaffleDetailsImageCard = ({ loading, raffle }: RaffleDetailsImageCa
   <Card className="w-full lg:w-125 order-2 lg:order-1 p-0 lg:min-h-130" border={false} shadow>
     {loading ? (
       <CardImageWrapper loading={loading} />
-    ) : !raffle?.pictures || !raffle?.pictures.length ? (
+    ) : raffle?.pictures?.length ? (
+      <RaffleDetailsImageCarousel pictures={raffle.pictures} placeholder={raffle.name} />
+    ) : (
       <CardImageWrapper>
         <Image
           src="/illustrations/imagePlaceholderIllustration.svg"
@@ -39,8 +41,6 @@ export const RaffleDetailsImageCard = ({ loading, raffle }: RaffleDetailsImageCa
           sizes="(max-width: 1024px) 100vw,33vw"
         />
       </CardImageWrapper>
-    ) : (
-      <RaffleDetailsImageCarousel pictures={raffle.pictures} placeholder={raffle.name} />
     )}
     {!loading && raffle?.status && raffle?.status !== GetRaffle200ItemsItemStatus.active && (
       <CardAction>
