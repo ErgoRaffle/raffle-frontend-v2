@@ -1,12 +1,12 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import { validateAddress } from '@fleet-sdk/core';
 import ReCAPTCHA from 'react-google-recaptcha';
 
-import { Check, Clipboard, Download } from '@ergo-raffle/icons';
+import { Check, Copy, Download } from '@ergo-raffle/icons';
 import {
   Button,
   Collapsible,
@@ -25,11 +25,13 @@ import {
   toast
 } from '@ergo-raffle/ui-kit';
 
-import { useDonate } from '@/hooks';
+import { useDonate, useWallet } from '@/hooks';
 import { paperWallet } from '@/lib';
 
 export const RaffleDonateFallbackAddressForm = () => {
   const { isSubmitting, siteKey, setRecaptcha, submitDonation } = useDonate();
+
+  const wallet = useWallet();
 
   const [captchaLoading, setCaptchaLoading] = useState<boolean>(true);
   const [address, setAddress] = useState<string>();
@@ -46,7 +48,12 @@ export const RaffleDonateFallbackAddressForm = () => {
       title: 'External Wallet',
       subTitle: 'Recommended',
       description: 'Use an external Ergo wallet like Nautilus to create your own wallet.',
-      content: (
+      content: wallet.addresses?.ergo?.main ? (
+        <div>
+          You already have a connected Ergo wallet. We've filled the address field with its address.
+          You can use it as is or replace it with any other address.
+        </div>
+      ) : (
         <div>
           <Link
             href="https://ergoplatform.org/en/get-erg/#Wallets"
@@ -116,6 +123,12 @@ export const RaffleDonateFallbackAddressForm = () => {
         return;
       });
   }, [address]);
+
+  useEffect(() => {
+    if (wallet.addresses?.ergo?.main) {
+      setAddress(wallet.addresses?.ergo?.main);
+    }
+  }, [wallet.addresses]);
 
   return (
     <div className="space-y-4">
@@ -201,7 +214,7 @@ export const RaffleDonateFallbackAddressForm = () => {
           />
           <InputGroupAddon align="inline-end">
             <Button variant="plain" size="icon-xs" onClick={handleCopy} disabled={!address}>
-              <Clipboard />
+              <Copy />
             </Button>
           </InputGroupAddon>
         </InputGroup>

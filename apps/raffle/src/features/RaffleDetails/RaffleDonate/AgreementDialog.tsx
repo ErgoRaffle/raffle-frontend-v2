@@ -34,7 +34,7 @@ export const AgreementDialog = () => {
     </Sheet>
   ) : (
     <Dialog open={agreementDialogOpen} onOpenChange={setAgreementDialogOpen}>
-      <DialogContent className="min-w-[90vw] md:min-w-3xl">
+      <DialogContent className="min-w-[90vw] lg:min-w-4xl">
         <DialogHeader>
           <DialogTitle>Agreement</DialogTitle>
           <DialogDescription>

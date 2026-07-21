@@ -90,7 +90,7 @@ export const CreateRaffle = () => {
   if (infoBlockchain.isLoading) return <CreateRaffleSkeleton />;
   if (!infoBlockchain.data) return null;
 
-  const hasNoActiveWallet = wallet?.selected?.name !== 'Nautilus';
+  const hasNoActiveWallet = wallet.ergo?.name !== 'Nautilus';
 
   const steps = [
     {

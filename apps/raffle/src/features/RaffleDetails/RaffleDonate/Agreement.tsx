@@ -9,7 +9,7 @@ import {
   StyledTextPreview
 } from '@ergo-raffle/ui-kit';
 
-import { useDonate, useWallet } from '@/hooks';
+import { useDonate } from '@/hooks';
 import { markdownToHtml } from '@/lib';
 
 export const Agreement = () => {
@@ -20,10 +20,9 @@ export const Agreement = () => {
     setIsFallbackDialogOpen,
     setAgreementDialogOpen,
     setIsSelectNetworkDialogOpen,
-    submitDonation
+    submitDonation,
+    network
   } = useDonate();
-
-  const wallet = useWallet();
 
   const [content, setContent] = useState('');
 
@@ -51,14 +50,18 @@ export const Agreement = () => {
 
   return (
     <>
-      <div
-        className="-mx-4 no-scrollbar max-h-[80vh] lg:max-h-50 overflow-y-auto px-4"
-        onScroll={handleScroll}
-      >
-        <StyledTextPreview
-          className="bg-gray-5 p-4 prose prose-neutral max-w-none"
-          text={markdownToHtml(content)}
-        />
+      <div className="relative">
+        <div className="pointer-events-none absolute top-0 left-0 right-0 h-15 bg-gradient-to-b from-gray-5 to-transparent" />
+        <div
+          className="-mx-4 no-scrollbar max-h-[80vh] lg:max-h-75 overflow-y-auto px-4"
+          onScroll={handleScroll}
+        >
+          <StyledTextPreview
+            className="bg-gray-5 p-4 prose prose-neutral max-w-none"
+            text={markdownToHtml(content)}
+          />
+        </div>
+        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-gray-5 to-transparent" />
       </div>
       <Field orientation="horizontal" className="mt-4">
         <Checkbox
@@ -83,7 +86,7 @@ export const Agreement = () => {
         </Button>
         <Button
           onClick={() => {
-            if (wallet.selected?.name === 'Nautilus') {
+            if (network === 'ergo') {
               setIsSelectNetworkDialogOpen(false);
               submitDonation();
             } else {
@@ -91,11 +94,11 @@ export const Agreement = () => {
               setIsFallbackDialogOpen(true);
             }
           }}
-          disabled={!agreementChecked || (wallet.selected?.name === 'Nautilus' && isSubmitting)}
+          disabled={!agreementChecked || (network === 'ergo' && isSubmitting)}
           variant="primary"
           className="min-w-35"
         >
-          {wallet.selected?.name === 'Nautilus' ? (
+          {network === 'ergo' ? (
             <>
               {!!isSubmitting && <Spinner />}
               Submit

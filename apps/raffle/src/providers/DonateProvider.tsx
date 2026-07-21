@@ -25,6 +25,7 @@ export type DonateContextValue = {
   donateForm: UseFormReturn<RaffleDonateForm>;
   ticketCount: number;
   onDonateFormSubmit: () => void;
+  network?: Network;
   selectNetwork: (value: Network) => void;
   isSubmitting: boolean;
   isLoading: boolean;
@@ -145,7 +146,9 @@ export const DonateProvider = ({ children, raffle }: DonateProviderProps) => {
             isBridgeable: bridgeableData?.bridgeable,
             ergoAddress: address
           },
-          walletInstance || wallet.selected
+          walletInstance ||
+            (network === 'bitcoin' ? wallet.bitcoin : undefined) ||
+            (network === 'ergo' ? wallet.ergo : undefined)
         );
 
         const url = network === 'bitcoin' ? getTxURLForRunes(txId) : getTxURL(txId);
@@ -198,6 +201,7 @@ export const DonateProvider = ({ children, raffle }: DonateProviderProps) => {
     ticketCount: donateForm.getValues('tickets'),
     onDonateFormSubmit,
     selectNetwork,
+    network,
     isSubmitting,
     isLoading,
     donateTransactionId,

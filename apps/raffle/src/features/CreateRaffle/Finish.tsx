@@ -50,7 +50,7 @@ export const Finish = ({ handleBack, infoBlockchain }: FinishProps) => {
   const wallet = useWallet();
 
   useEffect(() => {
-    wallet.selected
+    wallet.ergo
       ?.fetchTokens()
       .then((tokens) => {
         const token = tokens.find((token) => token.id === data.tokenId);
@@ -59,7 +59,7 @@ export const Finish = ({ handleBack, infoBlockchain }: FinishProps) => {
       .catch((error) => {
         toast.error('Failed to load token info. Please try again later.', { errorDetails: error });
       });
-  }, [data.tokenId, wallet.selected]);
+  }, [data.tokenId, wallet.ergo]);
 
   return (
     <div className="space-y-8">

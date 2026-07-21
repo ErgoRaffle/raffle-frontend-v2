@@ -12,7 +12,7 @@ import {
   Toaster
 } from '@ergo-raffle/ui-kit';
 
-import { WalletDialog } from '@/components';
+import { WalletDialog, WalletDialogActive } from '@/components';
 import { WalletProvider } from '@/providers';
 
 const Anchor: AnchorComponent = (props) => <Link {...props} />;
@@ -25,6 +25,7 @@ export const AppProviders = ({ children }: { children: ReactNode }) => (
       <WalletProvider>
         {children}
         <WalletDialog />
+        <WalletDialogActive />
       </WalletProvider>
     </FrameworkProvider>
   </ThemeProvider>
