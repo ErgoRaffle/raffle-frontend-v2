@@ -1,13 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { Card, CardContent, Stepper, Typography, toast } from '@ergo-raffle/ui-kit';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
+
+import { Card, CardContent, Stepper, Typography, toast } from '@ergo-raffle/ui-kit';
 
 import { createRaffleSchema, type RaffleForm } from '@/features/schemas';
 import { createRaffle } from '@/features/services';
@@ -90,7 +90,7 @@ export const CreateRaffle = () => {
   if (infoBlockchain.isLoading) return <CreateRaffleSkeleton />;
   if (!infoBlockchain.data) return null;
 
-  const hasNoActiveWallet = wallet?.selected?.name !== 'Nautilus';
+  const hasNoActiveWallet = wallet.ergo?.name !== 'Nautilus';
 
   const steps = [
     {

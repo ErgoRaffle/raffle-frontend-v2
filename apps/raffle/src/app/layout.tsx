@@ -1,7 +1,4 @@
-import './globals.css';
-
 import type { PropsWithChildren } from 'react';
-
 import type { Metadata } from 'next';
 
 import { LayoutBackground } from '@ergo-raffle/ui-kit';
@@ -10,6 +7,7 @@ import { Footer, Header } from '@/components';
 
 import { AppProviders } from './(providers)';
 import { fraunces, karla, poppins } from './fonts';
+import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Ergo Raffle',

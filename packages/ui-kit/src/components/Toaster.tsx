@@ -1,8 +1,9 @@
 import { type ReactNode, useEffect, useState } from 'react';
 
-import { Check, Clipboard, Close, Info } from '@ergo-raffle/icons';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Toaster as Sonner, toast as sonnerToast, type ToasterProps } from 'sonner';
+
+import { Check, Clipboard, Close, Info } from '@ergo-raffle/icons';
 
 import { cn, getErrorMessage } from '../lib/utils';
 import { Button } from './Button';

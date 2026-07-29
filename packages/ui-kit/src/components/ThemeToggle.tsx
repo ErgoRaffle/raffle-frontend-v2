@@ -1,5 +1,6 @@
-import { Moon, Sun } from '@ergo-raffle/icons';
 import { useTheme } from 'next-themes';
+
+import { Moon, Sun } from '@ergo-raffle/icons';
 
 import { Button } from './Button';
 

@@ -73,7 +73,7 @@ export const RaffleWinnerBasketInfo = ({
                       return (
                         <GiftItem
                           gift={gift}
-                          key={`${index}-${gift.amount}`}
+                          key={`${index.toString()}-${gift.amount}`}
                           giftToken={giftToken}
                         />
                       );

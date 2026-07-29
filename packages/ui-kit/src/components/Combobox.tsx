@@ -1,6 +1,7 @@
 import { type ComponentPropsWithRef, useRef } from 'react';
 
 import { Combobox as ComboboxPrimitive } from '@base-ui/react';
+
 import { Check, Close, Down, Search } from '@ergo-raffle/icons';
 
 import { cn } from '@/lib/utils';

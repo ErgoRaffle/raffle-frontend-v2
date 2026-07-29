@@ -7,18 +7,11 @@ export const useWalletAddress = () => {
   const wallet = useWallet();
 
   useEffect(() => {
-    if (!wallet.connecting && wallet.selected) {
-      wallet.selected.getAddresses().then((addresses) => {
-        const walletAddress =
-          'main' in addresses
-            ? addresses.main
-            : 'nativeSegWit' in addresses
-              ? addresses.nativeSegWit
-              : undefined;
-        setAddress(walletAddress);
-      });
+    const walletAddress = wallet.addresses?.ergo?.main || wallet.addresses?.bitcoin?.nativeSegWit;
+    if (!wallet.connecting && walletAddress) {
+      setAddress(walletAddress);
     }
-  }, [wallet.selected, wallet.connecting]);
+  }, [wallet.addresses, wallet.connecting]);
 
   return address;
 };

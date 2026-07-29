@@ -111,7 +111,7 @@ export const RafflesFilters = () => {
         <div className="flex items-center gap-2 w-full lg:w-fit flex-wrap">
           <MultiSelectCombobox
             items={statusFilterItems}
-            selected={(params.status as string[]) ?? []}
+            selected={(params.status as string[] | undefined) ?? []}
             onChange={(values) => setParam('status', values as GetRaffle200ItemsItemStatus[])}
             placeholder="Status"
             closeOnChange

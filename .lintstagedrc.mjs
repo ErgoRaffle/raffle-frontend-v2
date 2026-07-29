@@ -38,5 +38,5 @@ const runKnipConditional = (files) => {
 export default {
   '*': runKnipConditional,
   '*.{ts,tsx}': () => 'npm run type-check',
-  '*.{js,jsx,mjs,ts,tsx}': 'biome check --write'
+  '*.{js,jsx,mjs,ts,tsx}': 'npm run lint -- '
 };

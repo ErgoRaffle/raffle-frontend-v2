@@ -1,5 +1,4 @@
 import ecc from '@bitcoinerlab/secp256k1';
-import { InsufficientAssetsError } from '@ergo-raffle/base-wallet';
 import * as runelib from '@magiceden-oss/runestone-lib';
 import {
   type AssetBalance,
@@ -7,6 +6,8 @@ import {
   type BitcoinRunesUtxo
 } from '@rosen-bridge/bitcoin-runes-utxo-selection';
 import { address, initEccLib, Psbt } from 'bitcoinjs-lib';
+
+import { InsufficientAssetsError } from '@ergo-raffle/base-wallet';
 
 import {
   MINIMUM_BTC_FOR_NATIVE_SEGWIT_OUTPUT,

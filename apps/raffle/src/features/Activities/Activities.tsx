@@ -22,7 +22,7 @@ export const Activities = async ({ params, address }: ActivityProps) => {
       </CardHeader>
       <CardContent className="space-y-4">
         <ActivityFilers />
-        {!items || items.length <= 0 ? (
+        {items.length <= 0 ? (
           <div className="flex justify-center items-center grow my-9">
             <Empty>
               <Typography variant="heading-3">No matching results found.</Typography>

@@ -1,8 +1,10 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-
 import Link from 'next/link';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useFieldArray, useForm } from 'react-hook-form';
 
 import { WalletError, type WalletToken } from '@ergo-raffle/base-wallet';
 import { Dice, UpLeft } from '@ergo-raffle/icons';
@@ -20,8 +22,6 @@ import {
   Typography,
   toast
 } from '@ergo-raffle/ui-kit';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useFieldArray, useForm } from 'react-hook-form';
 
 import type { RaffleDetailView } from '@/features/RaffleDetails/raffleToViewModel';
 import { type AddGiftForm, addGiftSchema } from '@/features/schemas';
@@ -69,20 +69,20 @@ export const RaffleAddGiftForm = ({
   const [assets, setAssets] = useState<(WalletToken & { balance?: string })[]>([]);
 
   const load = useCallback(async () => {
-    if (wallet.selected?.name !== 'Nautilus') {
+    if (wallet.ergo?.name !== 'Nautilus') {
       throw new Error('Must be connected to Nautilus wallet.');
     }
 
-    const tokens = await wallet.selected.fetchTokens();
+    const tokens = await wallet.ergo.fetchTokens();
 
-    const promises = tokens.map((token) => wallet.selected?.fetchBalance(token.id));
+    const promises = tokens.map((token) => wallet.ergo?.fetchBalance(token.id));
 
     const balances = await Promise.all(promises);
 
     const result = tokens.map((token, index) => ({ ...token, balance: balances[index] }));
 
     return result;
-  }, [wallet.selected]);
+  }, [wallet.ergo]);
 
   useEffect(() => {
     load()

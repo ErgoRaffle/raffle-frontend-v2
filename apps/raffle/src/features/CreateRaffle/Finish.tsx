@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-
 import Image from 'next/image';
 import Link from 'next/link';
+
+import { useFormContext } from 'react-hook-form';
 
 import type { WalletToken } from '@ergo-raffle/base-wallet';
 import type { GetInfoBlockchain200 } from '@ergo-raffle/client';
@@ -23,7 +24,6 @@ import {
   Typography,
   toast
 } from '@ergo-raffle/ui-kit';
-import { useFormContext } from 'react-hook-form';
 
 import { useWallet } from '@/hooks';
 
@@ -50,7 +50,7 @@ export const Finish = ({ handleBack, infoBlockchain }: FinishProps) => {
   const wallet = useWallet();
 
   useEffect(() => {
-    wallet.selected
+    wallet.ergo
       ?.fetchTokens()
       .then((tokens) => {
         const token = tokens.find((token) => token.id === data.tokenId);
@@ -59,7 +59,7 @@ export const Finish = ({ handleBack, infoBlockchain }: FinishProps) => {
       .catch((error) => {
         toast.error('Failed to load token info. Please try again later.', { errorDetails: error });
       });
-  }, [data.tokenId, wallet.selected]);
+  }, [data.tokenId, wallet.ergo]);
 
   return (
     <div className="space-y-8">
@@ -216,7 +216,7 @@ export const Finish = ({ handleBack, infoBlockchain }: FinishProps) => {
                 className="underline hover:text-secondary-1"
                 target="_blank"
               >
-                Terms of Use
+                Terms of Service
               </Link>
               .
             </FieldLabel>

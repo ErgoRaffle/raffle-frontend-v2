@@ -1,6 +1,7 @@
-import { InsufficientAssetsError } from '@ergo-raffle/base-wallet';
 import { BitcoinBoxSelection, generateFeeEstimator } from '@rosen-bridge/bitcoin-utxo-selection';
 import { address, Psbt } from 'bitcoinjs-lib';
+
+import { InsufficientAssetsError } from '@ergo-raffle/base-wallet';
 
 import { MINIMUM_BTC_FOR_NATIVE_SEGWIT_OUTPUT } from '../contants';
 import { getAddressUtxos, getFeeRatio } from '../utils';

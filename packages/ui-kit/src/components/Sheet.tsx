@@ -1,7 +1,8 @@
 import type { ComponentProps } from 'react';
 
-import { Close } from '@ergo-raffle/icons';
 import { Dialog as SheetPrimitive } from 'radix-ui';
+
+import { Close } from '@ergo-raffle/icons';
 
 import { cn } from '@/lib/utils';
 

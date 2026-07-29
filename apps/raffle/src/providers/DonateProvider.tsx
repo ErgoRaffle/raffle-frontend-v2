@@ -1,13 +1,13 @@
 'use client';
 
 import { createContext, type ReactNode, useCallback, useState } from 'react';
-
 import Link from 'next/link';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+import { type UseFormReturn, useForm } from 'react-hook-form';
 
 import type { GetRaffleRaffleId200, GetTokensBridgeable200 } from '@ergo-raffle/client';
 import { toast } from '@ergo-raffle/ui-kit';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { type UseFormReturn, useForm } from 'react-hook-form';
 
 import { getInfo, getTokensBridgeable } from '@/actions';
 import { type RaffleDonateForm, raffleDonateSchema } from '@/features/schemas';
@@ -25,6 +25,7 @@ export type DonateContextValue = {
   donateForm: UseFormReturn<RaffleDonateForm>;
   ticketCount: number;
   onDonateFormSubmit: () => void;
+  network?: Network;
   selectNetwork: (value: Network) => void;
   isSubmitting: boolean;
   isLoading: boolean;
@@ -119,8 +120,7 @@ export const DonateProvider = ({ children, raffle }: DonateProviderProps) => {
           setNetwork(undefined);
         }
         if (walletInstance?.name === 'Nautilus') {
-          setIsSelectNetworkDialogOpen(false);
-          setTimeout(() => submitDonation(walletInstance), 0);
+          setAgreementDialogOpen(true);
         }
         if (walletInstance?.name === 'Xverse') {
           setAgreementDialogOpen(true);
@@ -146,7 +146,9 @@ export const DonateProvider = ({ children, raffle }: DonateProviderProps) => {
             isBridgeable: bridgeableData?.bridgeable,
             ergoAddress: address
           },
-          walletInstance || wallet.selected
+          walletInstance ||
+            (network === 'bitcoin' ? wallet.bitcoin : undefined) ||
+            (network === 'ergo' ? wallet.ergo : undefined)
         );
 
         const url = network === 'bitcoin' ? getTxURLForRunes(txId) : getTxURL(txId);
@@ -199,6 +201,7 @@ export const DonateProvider = ({ children, raffle }: DonateProviderProps) => {
     ticketCount: donateForm.getValues('tickets'),
     onDonateFormSubmit,
     selectNetwork,
+    network,
     isSubmitting,
     isLoading,
     donateTransactionId,

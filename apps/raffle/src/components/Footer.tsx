@@ -7,7 +7,7 @@ export const Footer = () => {
   const links = useMemo(
     () => [
       {
-        text: 'Raffle V1',
+        text: 'Raffle v1',
         href: 'https://ergoraffle.com'
       },
       {

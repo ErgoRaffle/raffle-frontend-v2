@@ -1,13 +1,14 @@
 'use client';
 
+import { ErgoAddress, Network } from '@fleet-sdk/core';
+import * as bip32 from 'bip32';
+import * as bip39 from 'bip39';
+
 /**
  * TODO: Find a better solution to detect mainnet and testnet insted of extract from the `@ergo-raffle/contracts package
  * local:ergo/ergoraffle/raffle-frontend-v2#115
  */
 import { raffleInfo } from '@ergo-raffle/contracts';
-import { ErgoAddress, Network } from '@fleet-sdk/core';
-import * as bip32 from 'bip32';
-import * as bip39 from 'bip39';
 
 const defaultStrength = 160;
 const derivationPath = "m/44'/429'/0'/0";

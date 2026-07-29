@@ -1,7 +1,8 @@
 import type { ComponentProps } from 'react';
 
-import { ExternalLink } from '@ergo-raffle/icons';
 import { cva, type VariantProps } from 'class-variance-authority';
+
+import { ExternalLink } from '@ergo-raffle/icons';
 
 import { cn } from '@/lib/utils';
 
@@ -61,7 +62,7 @@ export const Identifier = (props: IdentifierProps) => {
           <span className="shrink-0">{(value ?? '').slice(-trailingLength)}</span>
         </div>
         {href ? (
-          <a href={href} target="_blank">
+          <a href={href} target="_blank" rel="noopener">
             <ExternalLink />
           </a>
         ) : null}

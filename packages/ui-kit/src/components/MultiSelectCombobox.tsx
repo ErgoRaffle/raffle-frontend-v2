@@ -97,7 +97,7 @@ export const MultiSelectCombobox = ({
         ) : null}
         {!isLoading && !(!onQueryChange || (!!onQueryChange && !query)) && (
           <ComboboxEmpty>
-            {!!minQueryLength && query && query.length < minQueryLength
+            {minQueryLength && query && query.length < minQueryLength
               ? `Enter ${minQueryLength} or more characters`
               : 'No items found.'}
           </ComboboxEmpty>

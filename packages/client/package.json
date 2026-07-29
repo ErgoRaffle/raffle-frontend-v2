@@ -19,11 +19,12 @@
     "build": "npm run generate && tsc --build",
     "clean": "rimraf dist && rimraf tsconfig.build.tsbuildinfo",
     "generate": "orval",
-    "lint": "biome check --write && npm run prettify",
-    "lint:check": "biome check && npm run prettify:check",
-    "prettify": "biome format --write",
-    "prettify:check": "biome format",
+    "lint": "biome check --write",
+    "lint:check": "biome check",
     "type-check": "npm run generate && tsc --noEmit"
+  },
+  "dependencies": {
+    "axios": "^1.13.5"
   },
   "devDependencies": {
     "orval": "^7.21.0"
@@ -31,8 +32,5 @@
   "engines": {
     "node": ">=22.18.0",
     "npm": "11.6.2"
-  },
-  "dependencies": {
-    "axios": "^1.13.5"
   }
 }

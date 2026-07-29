@@ -1,8 +1,9 @@
 import type { ComponentProps } from 'react';
 
-import { Check, Down, Up } from '@ergo-raffle/icons';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Select as SelectPrimitive } from 'radix-ui';
+
+import { Check, Down, Up } from '@ergo-raffle/icons';
 
 import { cn } from '@/lib/utils';
 

@@ -2,9 +2,11 @@
 
 import { useEffect, useMemo, useState } from 'react';
 
+import { useFormContext } from 'react-hook-form';
+
 import type { WalletToken } from '@ergo-raffle/base-wallet';
 import type { GetInfoBlockchain200 } from '@ergo-raffle/client';
-import { Lock } from '@ergo-raffle/icons';
+import { Clipboard, Lock } from '@ergo-raffle/icons';
 import {
   Button,
   DistributionBar,
@@ -22,9 +24,9 @@ import {
   SelectTrigger,
   SelectValue,
   Token,
+  Tooltip,
   toast
 } from '@ergo-raffle/ui-kit';
-import { useFormContext } from 'react-hook-form';
 
 import type { RaffleDonationGoalForm } from '@/features/schemas';
 import { useWallet } from '@/hooks';
@@ -57,13 +59,13 @@ export const DonationGoalForm = ({
   const wallet = useWallet();
 
   useEffect(() => {
-    wallet.selected
+    wallet.ergo
       ?.fetchTokens()
       .then((tokens) => setTokens(tokens))
       .catch((error) => {
         toast.error('Failed to get wallet.', { errorDetails: error });
       });
-  }, [wallet.selected]);
+  }, [wallet.ergo]);
 
   const missionFund = watch('missionFund');
 
@@ -144,13 +146,29 @@ export const DonationGoalForm = ({
         </Field>
       </div>
       <Field>
-        <FieldTitle title="Set an address for the Mission’s Fund." />
-        <Input
-          variant="bordered"
-          {...register('address')}
-          className="lg:max-w-1/2"
-          aria-invalid={!!errors.address}
-        />
+        <FieldTitle title="Set an Ergo address for the Mission’s Fund." />
+        <InputGroup className="lg:max-w-1/2" variant="bordered">
+          <InputGroupInput {...register('address')} aria-invalid={!!errors.address} />
+          {wallet.ergo?.name === 'Nautilus' && (
+            <InputGroupAddon align="inline-end">
+              <Tooltip content="Use my connected Ergo wallet address">
+                <Button
+                  variant="plain"
+                  size="icon-xs"
+                  onClick={() =>
+                    setValue('address', wallet.addresses?.ergo?.main || '', {
+                      shouldDirty: true,
+                      shouldValidate: true
+                    })
+                  }
+                  type="button"
+                >
+                  <Clipboard className="size-5" />
+                </Button>
+              </Tooltip>
+            </InputGroupAddon>
+          )}
+        </InputGroup>
         {!!errors.address && <FieldError>{errors.address.message}</FieldError>}
       </Field>
       <div className="space-y-3">

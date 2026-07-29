@@ -13,10 +13,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc --build",
-    "lint": "biome check --write && npm run prettify",
-    "lint:check": "biome check && npm run prettify:check",
-    "prettify": "biome format --write",
-    "prettify:check": "biome format",
+    "lint": "biome check --write",
+    "lint:check": "biome check",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {

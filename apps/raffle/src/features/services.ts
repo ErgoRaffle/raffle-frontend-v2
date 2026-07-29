@@ -290,7 +290,7 @@ export const addGiftRaffle = async (
     .setRaffleId(raffle.id);
 
   // if the gift tokens are provided, add them to the builder
-  if (data.tokens !== undefined && data.tokens.length > 0) {
+  if (data.tokens.length > 0) {
     const tokens = data.tokens.filter((token) => token.tokenId.toLowerCase() !== 'erg');
     builder = builder.setGiftTokens(tokens); // array of gift tokens
   }
