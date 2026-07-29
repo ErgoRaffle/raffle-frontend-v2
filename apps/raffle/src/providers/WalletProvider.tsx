@@ -2,19 +2,23 @@
 
 import { createContext, type ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 
-import type { NautilusWallet } from '@ergo-raffle/nautilus-wallet';
-import type { XverseWallet } from '@ergo-raffle/xverse-wallet';
+import type { NautilusWallet, NautilusWalletAddresses } from '@ergo-raffle/nautilus-wallet';
+import type { XverseWallet, XverseWalletAddresses } from '@ergo-raffle/xverse-wallet';
 
 import { type WalletInstance, type WalletName, wallets as walletInstances } from '@/lib';
 
 export type WalletContextValue = {
   open: boolean;
-  addresses?: Record<string, string>;
+  addresses?: {
+    ergo?: NautilusWalletAddresses;
+    bitcoin?: XverseWalletAddresses;
+  };
   wallets: WalletInstance[];
-  selected?: WalletInstance;
+  ergo?: NautilusWallet;
+  bitcoin?: XverseWallet;
   connecting?: boolean;
   agreed?: boolean;
-  connect: (name: WalletName | undefined) => Promise<void>;
+  connect: (name: WalletName) => Promise<void>;
   disconnect: (name: WalletName) => Promise<void>;
   openDialog: (names?: WalletName[]) => Promise<WalletInstance | undefined>;
   closeDialog: () => Promise<void>;
@@ -22,21 +26,27 @@ export type WalletContextValue = {
 
   ensureConnected(name: 'Nautilus'): NautilusWallet;
   ensureConnected(name: 'Xverse'): XverseWallet;
+
+  openActive: boolean;
+  openActiveDialog: () => void;
+  closeActiveDialog: () => void;
 };
 
 export const WalletContext = createContext<WalletContextValue | null>(null);
 
 export const WalletProvider = ({ children }: { children: ReactNode }) => {
   const [open, setOpen] = useState(false);
+  const [openActive, setOpenActive] = useState(false);
 
   const [dialogResolver, setDialogResolver] = useState<((value?: WalletInstance) => void) | null>(
     null
   );
 
-  const [addresses, setAddresses] = useState<Record<string, string>>();
+  const [addresses, setAddresses] = useState<WalletContextValue['addresses']>();
   const [connecting, setConnecting] = useState<boolean>();
   const [agreed, setAgreed] = useState<boolean>();
-  const [selected, setSelected] = useState<WalletInstance>();
+  const [ergoWallet, setErgoWallet] = useState<NautilusWallet>();
+  const [bitcoinWallet, setBitcoinWallet] = useState<XverseWallet>();
   const [wallets, setWallets] = useState<WalletInstance[]>(walletInstances);
 
   const agree = useCallback(() => {
@@ -44,9 +54,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const connect = useCallback(
-    async (name?: WalletName) => {
-      setSelected(undefined);
-
+    async (name: WalletName) => {
       const wallet = wallets.find((wallet) => wallet.name === name);
 
       if (!wallet) return;
@@ -58,11 +66,21 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
 
         const addresses = await wallet.getAddresses();
 
-        setAddresses(addresses);
-
-        setSelected(wallet);
-
-        localStorage.setItem('raffle:wallet', wallet.name);
+        if (wallet.name === 'Nautilus') {
+          setErgoWallet(wallet);
+          setAddresses((prev) => ({
+            ...prev,
+            ergo: addresses as NautilusWalletAddresses
+          }));
+          localStorage.setItem('raffle:wallet:ergo', wallet.name);
+        } else if (wallet.name === 'Xverse') {
+          setBitcoinWallet(wallet as XverseWallet);
+          setAddresses((prev) => ({
+            ...prev,
+            bitcoin: addresses as XverseWalletAddresses
+          }));
+          localStorage.setItem('raffle:wallet:bitcoin', wallet.name);
+        }
 
         setOpen(false);
 
@@ -80,17 +98,30 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
     [dialogResolver, wallets]
   );
 
-  const disconnect = useCallback(async () => {
-    if (!selected) return;
+  const disconnect = useCallback(
+    async (name: WalletName) => {
+      try {
+        await bitcoinWallet?.disconnect();
+        localStorage.removeItem('raffle:wallet:bitcoin');
+        setBitcoinWallet(undefined);
+        setAddresses((prev) => ({ ...prev, bitcoin: undefined }));
+      } catch {
+        //
+      }
 
-    selected
-      .disconnect()
-      .then(() => {
-        setSelected(undefined);
-        localStorage.removeItem('raffle:wallet');
-      })
-      .catch(() => undefined);
-  }, [selected]);
+      if (name === 'Xverse') return;
+
+      try {
+        await ergoWallet?.disconnect();
+        localStorage.removeItem('raffle:wallet:ergo');
+        setErgoWallet(undefined);
+        setAddresses((prev) => ({ ...prev, ergo: undefined }));
+      } catch {
+        //
+      }
+    },
+    [bitcoinWallet, ergoWallet]
+  );
 
   const openDialog = useCallback(
     async (names?: WalletName[]): Promise<WalletInstance | undefined> => {
@@ -111,70 +142,86 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
 
   const ensureConnected = useCallback(
     (name: WalletName) => {
-      if (selected?.name !== name) {
-        throw new Error(`Must be connected to ${name} wallet.`);
-      }
+      switch (name) {
+        case 'Nautilus':
+          if (!ergoWallet) {
+            throw new Error(`Must be connected to ${name} wallet.`);
+          }
+          // biome-ignore lint/suspicious/noExplicitAny: make this better
+          return ergoWallet as any;
 
-      if (!selected) {
-        throw new Error(`No wallet is connected.`);
-      }
+        case 'Xverse':
+          if (!bitcoinWallet) {
+            throw new Error(`Must be connected to ${name} wallet.`);
+          }
+          // biome-ignore lint/suspicious/noExplicitAny: make this better
+          return bitcoinWallet as any;
 
-      // biome-ignore lint/suspicious/noExplicitAny: make this better
-      return selected as any;
+        default:
+          throw new Error(`No wallet is connected.`);
+      }
     },
-    [selected]
+    [ergoWallet, bitcoinWallet]
   );
 
   useEffect(() => {
     (async () => {
-      const name = localStorage.getItem('raffle:wallet');
-
-      const wallet = walletInstances.find((wallet) => wallet.name === name);
-
-      if (!wallet) return;
-
-      if (!wallet.isAvailable()) return;
-
       setConnecting(true);
 
-      if (!(await wallet.isConnected())) {
-        setConnecting(false);
+      const chains = ['ergo', 'bitcoin'] as const;
 
-        return;
-      }
+      for (const chain of chains) {
+        const name = localStorage.getItem(`raffle:wallet:${chain}`);
 
-      try {
-        await wallet.connect();
+        const wallet = walletInstances.find((wallet) => wallet.name === name);
 
-        const addresses = await wallet.getAddresses();
+        if (!wallet) continue;
 
-        setAddresses(addresses);
+        if (!wallet.isAvailable()) continue;
 
-        setSelected(wallet);
+        if (!(await wallet.isConnected())) continue;
 
-        setAgreed(true);
-      } catch {
-        //
+        try {
+          await wallet.connect();
+
+          const addresses = await wallet.getAddresses();
+
+          setAddresses((prev) => ({ ...prev, [chain]: addresses }));
+
+          if (wallet.name === 'Nautilus') {
+            setErgoWallet(wallet as NautilusWallet);
+          } else if (wallet.name === 'Xverse') {
+            setBitcoinWallet(wallet as XverseWallet);
+          }
+
+          setAgreed(true);
+        } catch {
+          //
+        }
       }
 
       setConnecting(false);
     })();
   }, []);
 
-  const value = useMemo(
+  const value = useMemo<WalletContextValue>(
     () => ({
       open,
       addresses,
       agreed,
       connecting,
-      selected,
+      ergo: ergoWallet,
+      bitcoin: bitcoinWallet,
       wallets,
       connect,
       disconnect,
       openDialog,
       agree,
       closeDialog,
-      ensureConnected
+      ensureConnected,
+      openActive,
+      openActiveDialog: () => setOpenActive(true),
+      closeActiveDialog: () => setOpenActive(false)
     }),
     [
       open,
@@ -182,13 +229,15 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
       agreed,
       agree,
       connecting,
-      selected,
+      ergoWallet,
+      bitcoinWallet,
       connect,
       disconnect,
       openDialog,
       ensureConnected,
       closeDialog,
-      wallets
+      wallets,
+      openActive
     ]
   );
 

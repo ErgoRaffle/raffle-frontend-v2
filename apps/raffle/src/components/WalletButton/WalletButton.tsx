@@ -1,6 +1,6 @@
 'use client';
 
-import { Clipboard, Wallet as WalletIcon } from '@ergo-raffle/icons';
+import { Copy, Wallet as WalletIcon } from '@ergo-raffle/icons';
 import { Button, Spinner, Tooltip, Typography } from '@ergo-raffle/ui-kit';
 
 import { useWallet } from '@/hooks';
@@ -12,30 +12,46 @@ export const WalletButton = () => {
     <Tooltip
       content={
         <ul>
-          {Object.keys(wallet.addresses || {}).map((key, _, keys) => {
-            const address =
-              wallet.addresses?.[key as unknown as keyof typeof wallet.addresses] || '';
+          {Object.keys(wallet.addresses || {}).map((chainKey) => {
+            const chainAddresses =
+              wallet.addresses?.[chainKey as keyof typeof wallet.addresses] || {};
             return (
-              <li key={key}>
-                {keys.length > 1 && <b>{key}:</b>}
-                &nbsp;
-                {address}
-                &nbsp;
-                <Clipboard
-                  className="align-middle inline-block w-[16px] cursor-pointer"
-                  onClick={() => navigator.clipboard.writeText(address)}
-                />
+              <li key={chainKey} className="mb-2">
+                <div className="typo-heading-5">{chainKey.toUpperCase()}</div>
+                <ul className="pl-4">
+                  {Object.keys(chainAddresses).map((addressKey) => {
+                    const address = chainAddresses[addressKey as keyof typeof chainAddresses];
+                    return (
+                      <li key={`${chainKey}:${addressKey}`} className="mb-2">
+                        <b className="text-gray-1">{addressKey}:</b>
+                        &nbsp;
+                        {address}
+                        &nbsp;
+                        <Copy
+                          className="align-middle inline-block w-[16px] cursor-pointer"
+                          onClick={() => navigator.clipboard.writeText(address)}
+                        />
+                      </li>
+                    );
+                  })}
+                </ul>
               </li>
             );
           })}
         </ul>
       }
-      disabled={wallet.connecting || !wallet.selected}
+      disabled={wallet.connecting || (!wallet.bitcoin && !wallet.ergo)}
     >
       <Button
         disabled={!!wallet.connecting}
         variant="outline-soft"
-        onClick={() => wallet.openDialog(['Nautilus'])}
+        onClick={() => {
+          if (wallet.ergo) {
+            wallet.openActiveDialog();
+          } else {
+            wallet.openDialog(['Nautilus']);
+          }
+        }}
       >
         <WalletIcon className="hidden lg:inline-flex" />
         {!!wallet.connecting && (
@@ -46,17 +62,25 @@ export const WalletButton = () => {
             </Typography>
           </div>
         )}
-        {!wallet.connecting && !!wallet.selected && (
+        {!wallet.connecting && (!!wallet.bitcoin || !!wallet.ergo) && (
           <div className="max-w-24 overflow-hidden flex items-center">
             <span className="shrink min-w-0 text-nowrap overflow-hidden text-ellipsis">
-              {(Object.values(wallet.addresses || {}).join(', ') ?? '').slice(0, -4)}
+              {(
+                Object.values(wallet.addresses?.ergo || wallet.addresses?.bitcoin || {}).join(
+                  ', '
+                ) ?? ''
+              ).slice(0, -4)}
             </span>
             <span className="shrink-0">
-              {(Object.values(wallet.addresses || {}).join(', ') ?? '').slice(-4)}
+              {(
+                Object.values(wallet.addresses?.ergo || wallet.addresses?.bitcoin || {}).join(
+                  ', '
+                ) ?? ''
+              ).slice(-4)}
             </span>
           </div>
         )}
-        {!wallet.connecting && !wallet.selected && (
+        {!wallet.connecting && !wallet.bitcoin && !wallet.ergo && (
           <>
             <span className="hidden lg:inline-flex">Connect Wallet</span>
             <span className="lg:hidden">Set Wallet</span>

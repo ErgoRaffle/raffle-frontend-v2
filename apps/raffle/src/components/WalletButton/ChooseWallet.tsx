@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { WalletError } from '@ergo-raffle/base-wallet';
 import { Right } from '@ergo-raffle/icons';
-import { Button, Spinner, Typography, toast } from '@ergo-raffle/ui-kit';
+import { Spinner, Typography, toast } from '@ergo-raffle/ui-kit';
 
 import { useWallet } from '@/hooks';
 import type { WalletName } from '@/lib';
@@ -51,19 +51,7 @@ export const ChooseWallet = () => {
               )}
             </Typography>
           </div>
-          {wallet.selected?.name === item.name ? (
-            <Button
-              size="sm"
-              onClick={(event) => {
-                event.stopPropagation();
-                wallet.disconnect(item.name);
-              }}
-            >
-              Disconnect
-            </Button>
-          ) : (
-            <Right className="size-6 my-2" />
-          )}
+          <Right className="size-6 my-2" />
         </button>
       ))}
     </>
